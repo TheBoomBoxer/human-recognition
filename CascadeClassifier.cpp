@@ -137,7 +137,7 @@ void detectAndDisplay(Mat frame)
     }
 
     // Detect profile faces
-    /*
+    
     profile_face_cascade.detectMultiScale( frame_gray, profile_faces, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(60, 60));
 
     for (size_t i = 0; i < profile_faces.size(); i++)
@@ -145,7 +145,7 @@ void detectAndDisplay(Mat frame)
         Point center(profile_faces[i].x + profile_faces[i].width / 2, profile_faces[i].y + profile_faces[i].height / 2);
         // ellipse(frame, center, Size(profile_faces[i].width / 2, profile_faces[i].height / 2), 0, 0, 360, Scalar(255, 0, 255), 4, 8, 0);
     }
-    */
+
 
     vector<Rect> upperBodies;
 

@@ -1,3 +1,3 @@
-/home/jamesconnor/MEGAsync/opencv-workspace/CascadeClassifier/CMakeFiles/edit_cache.dir
-/home/jamesconnor/MEGAsync/opencv-workspace/CascadeClassifier/CMakeFiles/rebuild_cache.dir
-/home/jamesconnor/MEGAsync/opencv-workspace/CascadeClassifier/CMakeFiles/CascadeClassifier.dir
+/home/monotoha/Documents/openCV/gitProject/CMakeFiles/rebuild_cache.dir
+/home/monotoha/Documents/openCV/gitProject/CMakeFiles/edit_cache.dir
+/home/monotoha/Documents/openCV/gitProject/CMakeFiles/CascadeClassifier.dir

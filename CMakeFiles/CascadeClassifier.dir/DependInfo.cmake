@@ -4,14 +4,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/jamesconnor/MEGAsync/opencv-workspace/CascadeClassifier/CascadeClassifier.cpp" "/home/jamesconnor/MEGAsync/opencv-workspace/CascadeClassifier/CMakeFiles/CascadeClassifier.dir/CascadeClassifier.cpp.o"
+  "/home/monotoha/Documents/openCV/gitProject/CascadeClassifier.cpp" "/home/monotoha/Documents/openCV/gitProject/CMakeFiles/CascadeClassifier.dir/CascadeClassifier.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/usr/local/include"
-  "/usr/local/include/opencv"
+  "/opt/ros/lunar/include/opencv-3.3.1"
+  "/opt/ros/lunar/include/opencv-3.3.1/opencv"
   )
 
 # Targets to which this target links.
