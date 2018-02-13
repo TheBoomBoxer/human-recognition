@@ -10,11 +10,12 @@ using namespace cv;
 
 void detectAndDisplay(Mat frame);
 
-String face_cascade_name, eyes_cascade_name, upperbody_cascade_name, profileface_cascade_name;
+String face_cascade_name, eyes_cascade_name, upperbody_cascade_name, profileface_cascade_name, lowerbody_cascade_name;
 CascadeClassifier face_cascade;
 CascadeClassifier eyes_cascade;
 CascadeClassifier upperbody_cascade;
 CascadeClassifier profile_face_cascade;
+CascadeClassifier lowerbody_cascade;
 
 const String window_name = "Capture - Face  detection";
 
@@ -25,7 +26,8 @@ int main(int argc, const char** argv)
         "{face_cascade|../../../opencv-3.3.1/data/haarcascades/haarcascade_frontalface_alt.xml|}"
         "{eyes_cascade|../../../opencv-3.3.1/data/haarcascades/haarcascade_eye_tree_eyeglasses.xml|}"
         "{upperbody_cascade|../../../opencv-3.3.1/data/haarcascades/haarcascade_upperbody.xml|}"
-        "{profile_face_cascade|../../../opencv-3.3.1/data/haarcascades/haarcascade_profileface.xml|}");
+        "{profile_face_cascade|../../../opencv-3.3.1/data/haarcascades/haarcascade_profileface.xml|}"
+        "{lowerbody_cascade|../../../opencv-3.3.1/data/haarcascades/haarcascade_lowerbody.xml|}");
     
     
 
@@ -38,6 +40,7 @@ int main(int argc, const char** argv)
     eyes_cascade_name = parser.get<String>("eyes_cascade");
     upperbody_cascade_name = parser.get<String>("upperbody_cascade");
     profileface_cascade_name = parser.get<String>("profile_face_cascade");
+    lowerbody_cascade_name = parser.get<String>("upperbody_cascade");
 
     VideoCapture capture;
 
@@ -66,6 +69,11 @@ int main(int argc, const char** argv)
     {
         cout << "(!) Error loading the profile face cascade." << endl;
         return -1;
+    }
+
+    if (!lowerbody_cascade.load(lowerbody_cascade_name))
+    {
+        cout << "(!) Error loading the lower body cascade." << endl;
     }
 
     //-- 2. Read the video stream
@@ -111,6 +119,7 @@ void detectAndDisplay(Mat frame)
 
     
     // -- Detect faces
+
     face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(60, 60));
 
     for (size_t i = 0; i < faces.size(); i++)
@@ -119,10 +128,10 @@ void detectAndDisplay(Mat frame)
         Point center(faces[i].x + faces[i].width / 2, faces[i].y + faces[i].height / 2);
         ellipse(frame, center, Size(faces[i].width / 2, faces[i].height / 2), 0, 0, 360, Scalar(255, 0, 255), 4, 8, 0);
 
-        /*
+        
         Mat faceROI = frame_gray(faces[i]);
         vector<Rect> eyes;
-
+        /*
         // -- In each face detect the eyes
         eyes_cascade.detectMultiScale(faceROI, eyes, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(30, 30));
 
@@ -137,16 +146,39 @@ void detectAndDisplay(Mat frame)
     }
 
     // Detect profile faces
-    
-    profile_face_cascade.detectMultiScale( frame_gray, profile_faces, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(60, 60));
+    if(faces.size()==0)
+    {    
+        profile_face_cascade.detectMultiScale( frame_gray, profile_faces, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(60, 60));
 
-    for (size_t i = 0; i < profile_faces.size(); i++)
-    {
-        Point center(profile_faces[i].x + profile_faces[i].width / 2, profile_faces[i].y + profile_faces[i].height / 2);
+        for (size_t i = 0; i < profile_faces.size(); i++)
+        {
+            Point center(profile_faces[i].x + profile_faces[i].width / 2, profile_faces[i].y + profile_faces[i].height / 2);
         // ellipse(frame, center, Size(profile_faces[i].width / 2, profile_faces[i].height / 2), 0, 0, 360, Scalar(255, 0, 255), 4, 8, 0);
+        }
+
+        if (profile_faces.size()==0)
+        {
+
+            vector<Rect> lowerBodies;
+
+            lowerbody_cascade.detectMultiScale(frame_gray, lowerBodies, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(60 ,60));
+
+            for (size_t i = 0; i < lowerBodies.size(); i++)
+            {
+                Point center(lowerBodies[i].x + lowerBodies[i].width / 2, lowerBodies[i].y + lowerBodies[i].height / 2);
+
+            Point p1(lowerBodies[i].x, lowerBodies[i].y);
+            Point p2(lowerBodies[i].x + lowerBodies[i].width, lowerBodies[i].y + lowerBodies[i].height);
+            rectangle(frame, p1, p2, Scalar(0, 255, 0), 3, 8, 0);   
+
+
+            }
+
+
+        }
     }
 
-
+/*
     vector<Rect> upperBodies;
 
     // -- Detect upper bodies
@@ -162,7 +194,7 @@ void detectAndDisplay(Mat frame)
         Point p2(upperBodies[i].x + upperBodies[i].width, upperBodies[i].y + upperBodies[i].height);
         rectangle(frame, p1, p2, Scalar(0, 255, 0), 3, 8, 0);
     }
-
+*/
     // -- Show what you got
     imshow(window_name, frame);
 }
