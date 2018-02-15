@@ -40,7 +40,7 @@ int main(int argc, const char** argv)
     eyes_cascade_name = parser.get<String>("eyes_cascade");
     upperbody_cascade_name = parser.get<String>("upperbody_cascade");
     profileface_cascade_name = parser.get<String>("profile_face_cascade");
-    lowerbody_cascade_name = parser.get<String>("upperbody_cascade");
+    lowerbody_cascade_name = parser.get<String>("lowerbody_cascade");
 
     VideoCapture capture;
 
@@ -174,7 +174,22 @@ void detectAndDisplay(Mat frame)
 
             }
 
+            if(lowerBodies.size()==0)
+            {
+                vector<Rect> upperBodies;
 
+                upperbody_cascade.detectMultiScale(frame_gray, upperBodies, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(60, 60));
+
+                for (size_t i = 0; i < upperBodies.size(); i++)
+                {
+                // Paint the upper bodies ellipses
+                    Point center(upperBodies[i].x + upperBodies[i].width / 2, upperBodies[i].y + upperBodies[i].height / 2);
+                // ellipse(frame, center, Size(upperBodies[i].width / 2, upperBodies[i].height / 2), 0, 0, 360, Scalar(0, 255, 0), 4, 8, 0);
+        
+                    Point p1(upperBodies[i].x, upperBodies[i].y);
+                    Point p2(upperBodies[i].x + upperBodies[i].width, upperBodies[i].y + upperBodies[i].height);
+                }
+            }
         }
     }
 
